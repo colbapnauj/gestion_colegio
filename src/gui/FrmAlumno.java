@@ -12,6 +12,7 @@ import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JDialog;
+import javax.swing.JInternalFrame;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
@@ -30,7 +31,7 @@ import java.awt.event.KeyEvent;
 import java.awt.event.MouseListener;
 import java.awt.event.MouseEvent;
 
-public class DlgAlumno extends JDialog implements ActionListener, KeyListener, MouseListener {
+public class FrmAlumno extends JInternalFrame implements ActionListener, KeyListener, MouseListener {
 
 	private JLabel lblCodAlumno;
 	private JLabel lblEdad;
@@ -64,9 +65,9 @@ public class DlgAlumno extends JDialog implements ActionListener, KeyListener, M
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
 				try {
-					DlgAlumno dialog = new DlgAlumno();
-					dialog.setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
-					dialog.setVisible(true);
+					FrmAlumno frame = new FrmAlumno();
+					// frame.setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
+					frame.setVisible(true);
 				} catch (Exception e) {
 					e.printStackTrace();
 				}
@@ -74,7 +75,7 @@ public class DlgAlumno extends JDialog implements ActionListener, KeyListener, M
 		});
 	}
 
-	public DlgAlumno() {
+	public FrmAlumno() {
 		setResizable(false);
 		setTitle("Mantenimiento | Alumno");
 		setBounds(100, 100, 700, 600);

@@ -1,5 +1,6 @@
 package gui;
 
+import java.awt.Dimension;
 import java.awt.EventQueue;
 import javax.swing.ImageIcon;
 import javax.swing.JFrame;
@@ -51,8 +52,8 @@ public class Home extends JFrame implements ActionListener {
     }
 
     public Home() {
-		int ancho = 750;
-		int alto = 500;
+		int ancho = 950;
+		int alto = 700;
 		int dx = 6;
 		int dy = 52;
 		
@@ -199,6 +200,14 @@ public class Home extends JFrame implements ActionListener {
     }
 
     protected void actionPerformedMntmAlumno(ActionEvent arg0) {
+        FrmAlumno fa = new FrmAlumno();
+        contentPane.add(fa);
+        
+        Dimension contentSize = contentPane.getSize();
+        Dimension frameSize = fa.getSize();
+        fa.setLocation((contentSize.width - frameSize.width) / 2, (contentSize.height - frameSize.height) / 2);
+        fa.setVisible(true);
+        
 
     }
     protected void actionPerformedMntmCurso(ActionEvent arg0) {
