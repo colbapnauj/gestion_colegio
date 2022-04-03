@@ -72,15 +72,15 @@ public class Home extends JFrame implements ActionListener {
         mnMantenimiento = new JMenu("Mantenimiento");
         menuHome.add(mnMantenimiento);
 
-        mntmAlumno = new JMenuItem("mntmAlumno");
+        mntmAlumno = new JMenuItem("Alumno");
         mntmAlumno.addActionListener(this);
         mnMantenimiento.add(mntmAlumno);
 
-        mntmCurso = new JMenuItem("mntmCurso");
+        mntmCurso = new JMenuItem("Curso");
         mntmCurso.addActionListener(this);
         mnMantenimiento.add(mntmCurso);
 
-        mntmDocente = new JMenuItem("mntmDocente");
+        mntmDocente = new JMenuItem("Docente");
         mntmDocente.addActionListener(this);
         mnMantenimiento.add(mntmDocente);
 
@@ -211,6 +211,13 @@ public class Home extends JFrame implements ActionListener {
 
     }
     protected void actionPerformedMntmCurso(ActionEvent arg0) {
+    	FrmCurso fc = new FrmCurso();
+        contentPane.add(fc);
+        
+        Dimension contentSize = contentPane.getSize();
+        Dimension frameSize = fc.getSize();
+        fc.setLocation((contentSize.width - frameSize.width) / 2, (contentSize.height - frameSize.height) / 2);
+        fc.setVisible(true);
 
     }
     protected void actionPerformedMntmDocente(ActionEvent arg0) {
@@ -223,6 +230,13 @@ public class Home extends JFrame implements ActionListener {
 
     }
     protected void actionPerformedMntmCAlumnos(ActionEvent arg0) {
+    	ConsultaAlumno fca = new ConsultaAlumno();
+        contentPane.add(fca);
+        
+        Dimension contentSize = contentPane.getSize();
+        Dimension frameSize = fca.getSize();
+        fca.setLocation((contentSize.width - frameSize.width) / 2, (contentSize.height - frameSize.height) / 2);
+        fca.setVisible(true);
 
     }
     protected void actionPerformedMntmCCursos(ActionEvent arg0) {

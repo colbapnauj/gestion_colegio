@@ -2,7 +2,7 @@ package clases;
 
 public class Docente {
 	private int codDocente;
-	private int calular;
+	private int celular;
 	private String nombres;
 	private String apellidoPaterno;
 	private String apellidoMaterno;
@@ -10,14 +10,14 @@ public class Docente {
 	private String especialidad;
 	private String fechaIngreso;
 	
-	public Docente(int codDocente, int calular, String nombres, String apellidoPaterno, String apellidoMaterno,
-			String dni, String especialidad, String fechaIngreso) {
+	public Docente(int codDocente, String nombres, String apellidoPaterno, String apellidoMaterno,
+			String dni, int celular, String especialidad, String fechaIngreso) {
 		this.codDocente = codDocente;
-		this.calular = calular;
 		this.nombres = nombres;
 		this.apellidoPaterno = apellidoPaterno;
 		this.apellidoMaterno = apellidoMaterno;
 		this.dni = dni;
+		this.celular = celular;
 		this.especialidad = especialidad;
 		this.fechaIngreso = fechaIngreso;
 	}
@@ -30,12 +30,12 @@ public class Docente {
 		this.codDocente = codDocente;
 	}
 
-	public int getCalular() {
-		return calular;
+	public int getCelular() {
+		return celular;
 	}
 
-	public void setCalular(int calular) {
-		this.calular = calular;
+	public void setCelular(int celular) {
+		this.celular = celular;
 	}
 
 	public String getNombres() {

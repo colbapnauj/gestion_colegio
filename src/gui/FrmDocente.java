@@ -1,6 +1,5 @@
 package gui;
 
-import clases.Alumno;
 import libreria.Lib;
 
 import java.awt.Color;
@@ -22,7 +21,9 @@ import javax.swing.JTextField;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableColumnModel;
 
-import arreglos.ArregloAlumnos;
+import arreglos.ArregloDocentes;
+import clases.Curso;
+import clases.Docente;
 
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
@@ -31,42 +32,43 @@ import java.awt.event.KeyEvent;
 import java.awt.event.MouseListener;
 import java.awt.event.MouseEvent;
 
-public class FrmAlumno extends JInternalFrame implements ActionListener, KeyListener, MouseListener {
+public class FrmDocente extends JInternalFrame implements ActionListener, KeyListener, MouseListener {
 
-	private JLabel lblCodAlumno;
-	private JLabel lblEdad;
-	private JLabel lblCelular;
-	private JLabel lblEstado;
+	private JLabel lblCodDocente;
 	private JLabel lblNombres;
-	private JLabel lblApellidoPaterno;
-	private JLabel lblApellidoMaterno;
+	private JLabel lblAPaterno;
+	private JLabel lblAMaterno;
 	private JLabel lblDni;
-	private JTextField txtCodAlumno;
+	private JLabel lblCelular;
+	private JLabel lblEspecialidad;
+	private JLabel lblFechaIngreso;
+	private JTextField txtCodDocente;
 	private JTextField txtNombres;
-	private JTextField txtApellidoPaterno;
-	private JTextField txtApellidoMaterno;
+	private JTextField txtAMaterno;
+	private JTextField txtAPaterno;
 	private JTextField txtDni;	
-	private JTextField txtEdad;
 	private JTextField txtCelular;
-	private JComboBox<String> cboEstado;
+	private JTextField txtEspecialidad;
+	private JTextField txtFechaIngreso;
 	private JButton btnAceptar;
 	private JButton btnAdicionar;	
 	private JButton btnModificar;
 	private JButton btnEliminar;
 	private JButton btnCerrar;
 	private JScrollPane scrollPane;
-	private JTable tblAlumno;
+	private JTable tblDocente;
 	private DefaultTableModel model;
 
-	ArregloAlumnos aa = new ArregloAlumnos();
+	ArregloDocentes ad = new ArregloDocentes();
 
 	private final JPanel contentPanel = new JPanel();
+	
 
 	public static void main(String[] args) {
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
 				try {
-					FrmAlumno frame = new FrmAlumno();
+					FrmDocente frame = new FrmDocente();
 					// frame.setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
 					frame.setVisible(true);
 				} catch (Exception e) {
@@ -76,83 +78,82 @@ public class FrmAlumno extends JInternalFrame implements ActionListener, KeyList
 		});
 	}
 
-	public FrmAlumno() {
+	public FrmDocente() {
 		setResizable(false);
-		setTitle("Mantenimiento | Alumno");
+		setTitle("Mantenimiento | Curso");
 		setBounds(100, 100, 700, 600);
 		getContentPane().setLayout(null);
-
-		lblCodAlumno = new JLabel("CodAlumno");
-		lblCodAlumno.setBounds(10, 10, 150, 23);
-		getContentPane().add(lblCodAlumno);
+		
+		lblCodDocente = new JLabel("CodDocente");
+		lblCodDocente.setBounds(10, 10, 150, 23);
+		getContentPane().add(lblCodDocente);
 		
 		lblNombres = new JLabel("Nombres");
 		lblNombres.setBounds(10, 40, 150, 23);
 		getContentPane().add(lblNombres);
 		
-		lblApellidoPaterno = new JLabel("ApellidoPaterno");
-		lblApellidoPaterno.setBounds(10, 70, 150, 23);
-		getContentPane().add(lblApellidoPaterno);
+		lblAPaterno = new JLabel("A Paterno");
+		lblAPaterno.setBounds(10, 70, 150, 23);
+		getContentPane().add(lblAPaterno);
 
-		lblApellidoMaterno = new JLabel("ApellidoMaterno");
-		lblApellidoMaterno.setBounds(10, 100, 150, 23);
-		getContentPane().add(lblApellidoMaterno);
+		lblAMaterno = new JLabel("A Materno");
+		lblAMaterno.setBounds(10, 100, 150, 23);
+		getContentPane().add(lblAMaterno);
 		
 		lblDni = new JLabel("Dni");
 		lblDni.setBounds(10, 130, 150, 23);
 		getContentPane().add(lblDni);
-
-		lblEdad = new JLabel("Edad");
-		lblEdad.setBounds(10, 160, 150, 23);
-		getContentPane().add(lblEdad);
-
+		
 		lblCelular = new JLabel("Celular");
-		lblCelular.setBounds(10, 190, 150, 23);
+		lblCelular.setBounds(10, 160, 150, 23);
 		getContentPane().add(lblCelular);
+		
+		lblEspecialidad = new JLabel("Especialidad");
+		lblEspecialidad.setBounds(10, 190, 150, 23);
+		getContentPane().add(lblEspecialidad);
+		
+		lblFechaIngreso = new JLabel("Fecha Ingreso");
+		lblFechaIngreso.setBounds(10, 220, 150, 23);
+		getContentPane().add(lblFechaIngreso);
 
-		lblEstado = new JLabel("Estado");
-		lblEstado.setBounds(10, 220, 150, 23);
-		getContentPane().add(lblEstado);		
-
-		txtCodAlumno = new JTextField();
-		txtCodAlumno.setBounds(200, 10, 100, 23);
-		getContentPane().add(txtCodAlumno);
+		txtCodDocente = new JTextField();
+		txtCodDocente.setBounds(200, 10, 100, 23);
+		getContentPane().add(txtCodDocente);
 		
 		txtNombres = new JTextField();
 		txtNombres.setBounds(200, 40, 100, 23);
 		getContentPane().add(txtNombres);
 		txtNombres.setColumns(10);
 		
-		txtApellidoPaterno = new JTextField();
-		txtApellidoPaterno.setBounds(200, 70, 100, 23);
-		getContentPane().add(txtApellidoPaterno);
-		txtApellidoPaterno.setColumns(10);
+		txtAPaterno = new JTextField();
+		txtAPaterno.setBounds(200, 70, 100, 23);
+		getContentPane().add(txtAPaterno);
+		txtAPaterno.setColumns(10);
 
-		txtApellidoMaterno = new JTextField();
-		txtApellidoMaterno.setBounds(200, 100, 100, 23);
-		getContentPane().add(txtApellidoMaterno);
-		txtApellidoMaterno.setColumns(10);
+		txtAMaterno = new JTextField();
+		txtAMaterno.setBounds(200, 100, 100, 23);
+		getContentPane().add(txtAMaterno);
+		txtAMaterno.setColumns(10);
 
 		txtDni = new JTextField();
 		txtDni.setBounds(200, 130, 100, 23);
 		getContentPane().add(txtDni);
 		txtDni.setColumns(10);
 		
-		txtEdad = new JTextField();
-		txtEdad.setBounds(200, 160, 100, 23);
-		getContentPane().add(txtEdad);
-		txtEdad.setColumns(10);
-		
 		txtCelular = new JTextField();
-		txtCelular.setBounds(200, 190, 100, 23);
+		txtCelular.setBounds(200, 160, 100, 23);
 		getContentPane().add(txtCelular);
 		txtCelular.setColumns(10);
-
-		cboEstado = new JComboBox<String>();
-		cboEstado.setEnabled(false);
-		cboEstado.setModel(new DefaultComboBoxModel<String>(Lib.estadosAlumno));
-		cboEstado.setBounds(200, 220, 100, 23);
-		getContentPane().add(cboEstado);
+		
+		txtEspecialidad = new JTextField();
+		txtEspecialidad.setBounds(200, 190, 100, 23);
+		getContentPane().add(txtEspecialidad);
+		txtEspecialidad.setColumns(10);
+		
+		txtFechaIngreso = new JTextField();
+		txtFechaIngreso.setBounds(200, 220, 100, 23);
+		getContentPane().add(txtFechaIngreso);
+		txtFechaIngreso.setColumns(10);
 
 		btnAceptar = new JButton("Aceptar");
 		btnAceptar.addActionListener(this);
@@ -181,8 +182,8 @@ public class FrmAlumno extends JInternalFrame implements ActionListener, KeyList
 		btnEliminar.setForeground(Color.BLUE);
 		btnEliminar.setBounds(509, 100, 100, 23);
 		getContentPane().add(btnEliminar);
-		
-		btnCerrar = new JButton("Cerrar");
+
+        btnCerrar = new JButton("Cerrar");
 		btnCerrar.addActionListener(this);
 		btnCerrar.addMouseListener(this);
 		btnCerrar.setForeground(Color.BLUE);
@@ -193,25 +194,26 @@ public class FrmAlumno extends JInternalFrame implements ActionListener, KeyList
 		scrollPane.setBounds(10, 300, 675, 250);
 		getContentPane().add(scrollPane);
 
-		tblAlumno = new JTable();
-		tblAlumno.addKeyListener(this);
-		tblAlumno.addMouseListener(this);
-		tblAlumno.setFillsViewportHeight(true);
-		scrollPane.setViewportView(tblAlumno);
+		tblDocente = new JTable();
+		tblDocente.addKeyListener(this);
+		tblDocente.addMouseListener(this);
+		tblDocente.setFillsViewportHeight(true);
+		scrollPane.setViewportView(tblDocente);
+		
 
 		model = new DefaultTableModel();
 		model.addColumn("Código");
 		model.addColumn("Nombres");
 		model.addColumn("A Paterno");
 		model.addColumn("A Materno");
-		model.addColumn("DNI");
-		model.addColumn("Edad");
+		model.addColumn("Dni");
 		model.addColumn("Celular");
-		model.addColumn("Estado");
+		model.addColumn("Especialidad");
+		model.addColumn("Fecha Ingreso");
+		
+		tblDocente.setModel(model);
 
-		tblAlumno.setModel(model);
-
-		txtCodAlumno.setEditable(false);
+		// txtCodAlumno.setEditable(false);
 
 		 habilitarEntradas(false);
 		 ajustarAnchoColumnas();
@@ -232,12 +234,12 @@ public class FrmAlumno extends JInternalFrame implements ActionListener, KeyList
 		if (arg0.getSource() == btnEliminar) {
 			actionPerformedBtnEliminar(arg0);
 		}
-		if (arg0.getSource() == btnCerrar) {
+        if (arg0.getSource() == btnCerrar) {
 			actionPerformedBtnCerrar(arg0);
 		}
 	}
-	
-	protected void actionPerformedBtnCerrar(ActionEvent arg0) {
+
+    protected void actionPerformedBtnCerrar(ActionEvent arg0) {
         this.dispose();
     }
 
@@ -249,14 +251,14 @@ public class FrmAlumno extends JInternalFrame implements ActionListener, KeyList
 		clear();
 		habilitarEntradas(true);
 
-		txtNombres.requestFocus();
+		txtCodDocente.requestFocus();
 	}
 
 	protected void actionPerformedBtnModificar(ActionEvent arg0) {
 		btnAdicionar.setEnabled(true);
 		btnModificar.setEnabled(false);
 		btnEliminar.setEnabled(true);
-		if (aa.tamanio() == 0) {
+		if (ad.tamanio() == 0) {
 			btnAceptar.setEnabled(false);
 			habilitarEntradas(false);
 			noExistenAlumnosMensaje();
@@ -264,8 +266,8 @@ public class FrmAlumno extends JInternalFrame implements ActionListener, KeyList
 			editarFila();
 			btnAceptar.setEnabled(true);
 			habilitarEntradas(true);
-			txtDni.setEditable(false);
-			txtNombres.requestFocus();
+			txtCodDocente.setEditable(false);
+			txtCodDocente.requestFocus();
 		}
 
 
@@ -274,19 +276,20 @@ public class FrmAlumno extends JInternalFrame implements ActionListener, KeyList
 		btnAdicionar.setEnabled(true);
 		btnModificar.setEnabled(true);
 		btnEliminar.setEnabled(false);
-		if (aa.tamanio() == 0)
+		if (ad.tamanio() == 0)
 			noExistenAlumnosMensaje();
 		else {
 			editarFila();
 			habilitarEntradas(false);
 
-			if (aa.buscar(leerCodigoAlumno()).getEstado() != 0) {
-				message("Para eliminar un perfil el estado debe ser \"Registrado\"");
-			}
+//			if (ad.buscar(leerCodCurso()).getEstado() != 0) {
+//				message("Para eliminar un perfil el estado debe ser \"Registrado\"");
+//			}
 			int result = prompt("Eliminar registro?");
 			if (result == 0) {
-				aa.eliminar(aa.buscar(leerCodigoAlumno()));
-				aa.grabarAlumnos();
+				// TODO Validar que Docente no tenga Alumnos matriculados en él
+				ad.eliminar(ad.buscar(pInt(leerCodDocente())));
+				ad.grabarDocentes();
 				listar();
 				editarFila();
 			}
@@ -294,63 +297,40 @@ public class FrmAlumno extends JInternalFrame implements ActionListener, KeyList
 	}
 
 	protected void actionPerformedBtnAceptar(ActionEvent arg0) {
-		int codigoAlumno = leerCodigoAlumno();
-		String nombres = leerNombres();
+		String codDocente = leerCodDocente();
+		String nombres = leerNombre();
 		String apaterno = leerAPaterno();
 		String amaterno = leerAMaterno();
 		String dni = leerDni();
-		int edad = leerEdad();
-		int celular = leerCelular();
-		int estado = leerEstado();
-
-		if (nombres.length() == 0) {
-			error("Nombres, debe completar este campo", txtNombres);
-			return;
-		}
-		if (apaterno.length() == 0) {
-			error("Apellido Paterno, debe completar este campo", txtApellidoPaterno);
-			return;
-		}
-		if (amaterno.length() == 0) {
-			error("Apellido Materno, debe completar este campo", txtApellidoMaterno);
-			return;
-		}
-		if (dni.length() != 8) {
-			error("DNI, debe completar este campo", txtDni);
-			return;
-		}
-		// TODO validar solo ingreso de valor hasta 100 años
-		if (edad == -1) {
-			error("Edad, debe completar este campo", txtEdad);
-			return;
-		}
-		// TODO valor debe tener como longitud 9 caracteres.
-		// Otra forma de validar podría ser trabajar con Strings
-		if (celular == -1) {
-			error("Celular, debe completar este campo", txtCelular);
-			return;
-		}
+		String celular = leerCelular();
+		String especialidad = leerEspecialidad();
+		String fechaIngreso = leerFechaIngreso();
+		
+		
+		
+		// TODO Validar campos
 		
 		if (btnAdicionar.isEnabled() == false) {
-			if (aa.existeDni(dni)) {
-				error("Dni ya registrado", txtDni);
+			if (ad.existeCod(pInt(codDocente))) {
+				error("Cod ya existe", txtCodDocente);
 				return;
 			}
-			Alumno alumno = new Alumno(codigoAlumno, nombres, apaterno, amaterno, dni, edad, celular, estado);
-			aa.adicionar(alumno);
-			aa.grabarAlumnos();
+			Docente docente= new Docente(pInt(codDocente), nombres, apaterno, amaterno, dni, pInt(celular), especialidad, fechaIngreso);
+			ad.adicionar(docente);
+			ad.grabarDocentes();
 			btnAdicionar.setEnabled(true);
+			// TODO Ordernar Lista
 		}
 		if (btnModificar.isEnabled() == false) {
-			Alumno alumno = aa.buscar(codigoAlumno);
-			alumno.setNombres(nombres);
-			alumno.setApellidoPaterno(apaterno);
-			alumno.setApellidoMaterno(amaterno);
-			 alumno.setDni(dni);
-			alumno.setEdad(edad);
-			alumno.setCelular(celular);
-			alumno.setEstado(estado);
-			aa.grabarAlumnos();
+			Docente docente = ad.buscar(pInt(codDocente));
+			docente.setNombres(nombres);
+			docente.setApellidoPaterno(apaterno);
+			docente.setApellidoMaterno(amaterno);
+			docente.setDni(dni);
+			docente.setCelular(pInt(celular));
+			docente.setEspecialidad(especialidad);
+			docente.setFechaIngreso(fechaIngreso);
+			ad.grabarDocentes();
 			btnModificar.setEnabled(true);
 		}
 
@@ -358,87 +338,82 @@ public class FrmAlumno extends JInternalFrame implements ActionListener, KeyList
 		habilitarEntradas(false);
 		
 	}
+	
+	int pInt(String value) {
+		return Integer.parseInt(value);
+	}
 
 
 	void clear() {
-		txtCodAlumno.setText("" + aa.codigoCorrelativo());
-		txtEdad.setText("");
-		txtCelular.setText("");
-		txtNombres.setText("");
-		txtApellidoPaterno.setText("");
-		txtApellidoMaterno.setText("");
+		txtCodDocente.setText("");
+//		txtCiclo.setText("");
+		txtAPaterno.setText("");
+		txtAMaterno.setText("");
 		txtDni.setText("");
-
 	}
 
 	void habilitarEntradas(boolean value) {
 		btnAceptar.setEnabled(value);
-		txtNombres.setEditable(value);
-		txtApellidoPaterno.setEditable(value);
-		txtApellidoMaterno.setEditable(value);
-		txtDni.setEditable(value);
-		txtEdad.setEditable(value);
-		txtCelular.setEditable(value);
+		txtCodDocente.setEditable(value);
+		txtAPaterno.setEditable(value);
+		txtAMaterno.setEditable(value);
+		txtDni .setEditable(value);
 	}
 	
-	void habilitarBotones(boolean sino) {
-		btnAdicionar.setEnabled(sino);
-		btnModificar.setEnabled(sino);
+	void habilitarBotones(boolean value) {
+		btnAdicionar.setEnabled(value);
+		btnModificar.setEnabled(value);
+		// btnEliminar.setEnabled(value);
 	}
 
 	void editarFila() {
-		if (aa.tamanio() == 0)
+		if (ad.tamanio() == 0)
 			clear();
 		else {
-			Alumno a = aa.obtener(tblAlumno.getSelectedRow());
-			txtCodAlumno.setText("" + a.getCodAlumno());
-			txtNombres.setText(a.getNombres());
-			txtApellidoPaterno.setText(a.getApellidoPaterno());
-			txtApellidoMaterno.setText(a.getApellidoMaterno());
-			txtDni.setText(a.getDni());
-			txtEdad.setText("" + a.getEdad());
-			txtCelular.setText("" + a.getCelular());
+			Docente a = ad.obtener(tblDocente.getSelectedRow());
+			txtCodDocente.setText("" + a.getCodDocente());
+//			txtCiclo.setText("" + a.getCiclo());
+			txtAPaterno.setText("" + a.getCreditos());
+			txtAMaterno.setText("" + a.getHoras());
+			txtDni.setText("" + a.getAsignatura());
 		}
 	}
 
 	void listar() {
 		int posFila = 0;
 		if (model.getRowCount() > 0)
-			posFila = tblAlumno.getSelectedRow();
-		if (model.getRowCount() == aa.tamanio() - 1)
-			posFila = aa.tamanio() - 1;
-		if (posFila == aa.tamanio())
+			posFila = tblCurso.getSelectedRow();
+		if (model.getRowCount() == ad.tamanio() - 1)
+			posFila = ad.tamanio() - 1;
+		if (posFila == ad.tamanio())
 			posFila--;
 		model.setRowCount(0);
-		Alumno a;
-		for (int i = 0; i < aa.tamanio(); i++) {
-			a = aa.obtener(i);
+		Docente c;
+		///
+		ad.ordenar();
+		///
+		for (int i = 0; i < ad.tamanio(); i++) {
+			c = ad.obtener(i);
 			Object[] fila = {
-				a.getCodAlumno(),
-				a.getNombres(),
-				a.getApellidoPaterno(),
-				a.getApellidoMaterno(),
-				a.getDni(),
-				a.getEdad(),
-				a.getCelular(),
-				Lib.estadosAlumno[a.getEstado()]
+				c.getCodCurso(),
+				Lib.cicloCurso[c.getCiclo()],
+				c.getCreditos(),
+				c.getHoras(),
+				c.getAsignatura()
 			};
 			model.addRow(fila);
 		}
-		if (aa.tamanio() > 0)
-			tblAlumno.getSelectionModel().setSelectionInterval(posFila, posFila);
+		if (ad.tamanio() > 0)
+			tblCurso.getSelectionModel().setSelectionInterval(posFila, posFila);
 	}
 
 	void ajustarAnchoColumnas() {
-		TableColumnModel tcm = tblAlumno.getColumnModel();
+		TableColumnModel tcm = tblCurso.getColumnModel();
 		tcm.getColumn(0).setPreferredWidth(anchoColumna(20));
 		tcm.getColumn(1).setPreferredWidth(anchoColumna(20));
 		tcm.getColumn(2).setPreferredWidth(anchoColumna(20));
 		tcm.getColumn(3).setPreferredWidth(anchoColumna(20));
 		tcm.getColumn(4).setPreferredWidth(anchoColumna(20));
-		tcm.getColumn(5).setPreferredWidth(anchoColumna(20));
-		tcm.getColumn(6).setPreferredWidth(anchoColumna(20));
-		tcm.getColumn(7).setPreferredWidth(anchoColumna(20));
 	}
 
 	void noExistenAlumnosMensaje() {
@@ -459,51 +434,48 @@ public class FrmAlumno extends JInternalFrame implements ActionListener, KeyList
 		txt.requestFocus();
 	}
 
-	int leerCodigoAlumno() {
-		return Integer.parseInt(txtCodAlumno.getText().trim());
+	String leerCodDocente() {
+		return txtCodDocente.getText().trim();
 	}
 
-	String leerNombres() {
+	String leerNombre() {
 		return txtNombres.getText().trim();
 	}
 
 	String leerAPaterno() {
-		return txtApellidoPaterno.getText().trim();
+		return txtAPaterno.getText().trim();
 	}
-
+	
 	String leerAMaterno() {
-		return txtApellidoMaterno.getText().trim();
+		return txtAMaterno.getText().trim();
 	}
-
+	
 	String leerDni() {
 		return txtDni.getText().trim();
 	}
-
-	int leerEdad() {
-		String value = txtEdad.getText().trim();
-		if (value.equals("")) {
-			return -1;
-		}
-		return Integer.parseInt(value);
+	
+	String leerCelular() {
+		return txtCelular.getText().trim();
+	}
+	
+	String leerEspecialidad() {
+		return txtEspecialidad.getText().trim();
+	}
+	
+	// TODO En vez de un textfield debería usar un picker
+	String leerFechaIngreso() {
+		return txtFechaIngreso.getText().trim();
 	}
 
-	int leerCelular() {
-		String value = txtCelular.getText().trim();
-		if (value.equals("")) {
-			return -1;
-		}
-		return Integer.parseInt(value);
-	}
-
-	int leerEstado() {
-		return cboEstado.getSelectedIndex();
-	}
+//	int leerEstado() {
+//		return cboEstado.getSelectedIndex();
+//	}
 
 	int anchoColumna(int porcentaje) {
 		return porcentaje * scrollPane.getWidth() / 100;
 	}
 
-	protected void mouseClickedTblAlumno(MouseEvent e) {
+	protected void mouseClickedTblCurso(MouseEvent e) {
 		habilitarEntradas(false);
 		habilitarBotones(true);
 		editarFila();
@@ -512,8 +484,8 @@ public class FrmAlumno extends JInternalFrame implements ActionListener, KeyList
 	@Override
 	public void mouseClicked(MouseEvent e) {
 		// TODO Auto-generated method stub
-		if (e.getSource() == tblAlumno) {
-			mouseClickedTblAlumno(e);;
+		if (e.getSource() == tblCurso) {
+			mouseClickedTblCurso(e);;
 		}
 		
 	}
@@ -557,11 +529,9 @@ public class FrmAlumno extends JInternalFrame implements ActionListener, KeyList
 	@Override
 	public void keyReleased(KeyEvent e) {
 		// TODO Auto-generated method stub
-		if (e.getSource() == tblAlumno) {
+		if (e.getSource() == tblCurso) {
 			e.consume();
 			editarFila();	
 		}	
 	}
-
-
 }
