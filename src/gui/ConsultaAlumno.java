@@ -10,7 +10,9 @@ import java.awt.event.ActionEvent;
 import javax.swing.JTextField;
 
 import arreglos.ArregloAlumnos;
+import arreglos.ArregloMatriculas;
 import clases.Alumno;
+import clases.Matricula;
 
 import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
@@ -22,6 +24,8 @@ public class ConsultaAlumno extends JInternalFrame {
 	private JScrollPane scrollPane;
 	private JTextArea txtS;
 	private ArregloAlumnos aa = new ArregloAlumnos();
+	private ArregloMatriculas am = new ArregloMatriculas();
+	
 
 	/**
 	 * Launch the application.
@@ -101,6 +105,16 @@ public class ConsultaAlumno extends JInternalFrame {
 	void mostrarDatos(Alumno a) {
 		txtS.setText("");
 		imprimir("Nombres\t: " + a.getNombres());
+		
+		a.setEstado(1);
+		
+		// Mostrar si está matriculado
+		if (a.getEstado() == 1) {
+			
+//			Matricula matricula = am.buscar(a.getCodAlumno());
+			Matricula matricula = new Matricula(1, a.getCodAlumno(), 2, 3,  "fecha", "hora");
+			imprimir("codMatricula\t: " + matricula.getCodCurso());
+		}
 		
 	}
 	

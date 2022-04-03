@@ -71,26 +71,19 @@ public class ArregloMatriculas {
             BufferedReader br;
             String linea;
             String[] s;
-            int codigoAlumno;
-            String nombres;
-            String apaterno;
-            String amaterno;
-            String dni;
-            int edad;
-            int celular;
-            int estado;
+            int codMatricula, codAlumno, codCurso, codDocente;
+            String fecha, hora;
             br = new BufferedReader(new FileReader("alumnos.txt"));
             while ((linea = br.readLine()) != null) {
                 s = linea.split(";");
-                codigoAlumno = Integer.parseInt(s[0].trim());
-                nombres = s[1].trim();
-                apaterno = s[2].trim();
-                amaterno = s[3].trim();
-                dni = s[4].trim();
-                edad = Integer.parseInt(s[5].trim());
-                celular = Integer.parseInt(s[6].trim());
-                estado = Integer.parseInt(s[7].trim());
-                adicionar(new Matricula(codigoAlumno, nombres, apaterno, amaterno, dni, edad, celular, estado));
+                codMatricula = Integer.parseInt(s[0].trim());
+                codAlumno = Integer.parseInt(s[1].trim());
+                codCurso = Integer.parseInt(s[2].trim());
+                codDocente = Integer.parseInt(s[3].trim());
+                fecha = s[4].trim();
+                hora = s[5].trim();
+                
+                adicionar(new Matricula(codMatricula, codAlumno, codCurso, codDocente, fecha, hora));
             }
             br.close();
         }

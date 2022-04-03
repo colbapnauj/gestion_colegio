@@ -221,9 +221,23 @@ public class Home extends JFrame implements ActionListener {
 
     }
     protected void actionPerformedMntmDocente(ActionEvent arg0) {
+    	FrmDocente fd = new FrmDocente();
+        contentPane.add(fd);
+        
+        Dimension contentSize = contentPane.getSize();
+        Dimension frameSize = fd.getSize();
+        fd.setLocation((contentSize.width - frameSize.width) / 2, (contentSize.height - frameSize.height) / 2);
+        fd.setVisible(true);
 
     }
     protected void actionPerformedMntmMatricula(ActionEvent arg0) {
+    	FrmMatricula fm = new FrmMatricula();
+        contentPane.add(fm);
+        
+        Dimension contentSize = contentPane.getSize();
+        Dimension frameSize = fm.getSize();
+        fm.setLocation((contentSize.width - frameSize.width) / 2, (contentSize.height - frameSize.height) / 2);
+        fm.setVisible(true);
 
     }
     protected void actionPerformedMntmRetiro(ActionEvent arg0) {

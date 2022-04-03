@@ -47,6 +47,13 @@ public class ArregloDocentes {
     public void eliminar(Docente c) {
         docentes.remove(c);
     }
+    
+    public int codigoCorrelativo() {
+        if (tamanio() == 0)
+            return 2001;
+        else
+            return obtener(tamanio() - 1).getCodDocente() + 1;
+    }
 
     public void grabarDocentes() {
         try {

@@ -345,11 +345,15 @@ public class FrmDocente extends JInternalFrame implements ActionListener, KeyLis
 
 
 	void clear() {
-		txtCodDocente.setText("");
-//		txtCiclo.setText("");
+		txtCodDocente.setText("" + ad.codigoCorrelativo());
+		txtNombres.setText("");
 		txtAPaterno.setText("");
 		txtAMaterno.setText("");
 		txtDni.setText("");
+		txtCelular.setText("");
+		txtEspecialidad.setText("");
+		txtFechaIngreso.setText("");
+
 	}
 
 	void habilitarEntradas(boolean value) {
@@ -370,45 +374,51 @@ public class FrmDocente extends JInternalFrame implements ActionListener, KeyLis
 		if (ad.tamanio() == 0)
 			clear();
 		else {
-			Docente a = ad.obtener(tblDocente.getSelectedRow());
-			txtCodDocente.setText("" + a.getCodDocente());
-//			txtCiclo.setText("" + a.getCiclo());
-			txtAPaterno.setText("" + a.getCreditos());
-			txtAMaterno.setText("" + a.getHoras());
-			txtDni.setText("" + a.getAsignatura());
+			Docente d = ad.obtener(tblDocente.getSelectedRow());
+			txtCodDocente.setText("" + d.getCodDocente());
+			txtNombres.setText(d.getNombres());
+			txtAPaterno.setText(d.getApellidoPaterno());
+			txtAMaterno.setText(d.getApellidoMaterno());
+			txtDni.setText(d.getDni());
+			txtCelular.setText("" + d.getCelular());
+			txtEspecialidad.setText(d.getEspecialidad());
+			txtFechaIngreso.setText(d.getFechaIngreso());
 		}
 	}
 
 	void listar() {
 		int posFila = 0;
 		if (model.getRowCount() > 0)
-			posFila = tblCurso.getSelectedRow();
+			posFila = tblDocente.getSelectedRow();
 		if (model.getRowCount() == ad.tamanio() - 1)
 			posFila = ad.tamanio() - 1;
 		if (posFila == ad.tamanio())
 			posFila--;
 		model.setRowCount(0);
-		Docente c;
+		Docente d;
 		///
 		ad.ordenar();
 		///
 		for (int i = 0; i < ad.tamanio(); i++) {
-			c = ad.obtener(i);
+			d = ad.obtener(i);
 			Object[] fila = {
-				c.getCodCurso(),
-				Lib.cicloCurso[c.getCiclo()],
-				c.getCreditos(),
-				c.getHoras(),
-				c.getAsignatura()
+				d.getCodDocente(),
+				d.getNombres(),
+				d.getApellidoPaterno(),
+				d.getApellidoMaterno(),
+				d.getDni(),
+				d.getCelular(),
+				d.getEspecialidad(),
+				d.getFechaIngreso()
 			};
 			model.addRow(fila);
 		}
 		if (ad.tamanio() > 0)
-			tblCurso.getSelectionModel().setSelectionInterval(posFila, posFila);
+			tblDocente.getSelectionModel().setSelectionInterval(posFila, posFila);
 	}
 
 	void ajustarAnchoColumnas() {
-		TableColumnModel tcm = tblCurso.getColumnModel();
+		TableColumnModel tcm = tblDocente.getColumnModel();
 		tcm.getColumn(0).setPreferredWidth(anchoColumna(20));
 		tcm.getColumn(1).setPreferredWidth(anchoColumna(20));
 		tcm.getColumn(2).setPreferredWidth(anchoColumna(20));
@@ -484,7 +494,7 @@ public class FrmDocente extends JInternalFrame implements ActionListener, KeyLis
 	@Override
 	public void mouseClicked(MouseEvent e) {
 		// TODO Auto-generated method stub
-		if (e.getSource() == tblCurso) {
+		if (e.getSource() == tblDocente) {
 			mouseClickedTblCurso(e);;
 		}
 		
@@ -529,7 +539,7 @@ public class FrmDocente extends JInternalFrame implements ActionListener, KeyLis
 	@Override
 	public void keyReleased(KeyEvent e) {
 		// TODO Auto-generated method stub
-		if (e.getSource() == tblCurso) {
+		if (e.getSource() == tblDocente) {
 			e.consume();
 			editarFila();	
 		}	
