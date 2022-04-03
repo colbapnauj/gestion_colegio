@@ -106,4 +106,11 @@ public class ArregloAlumnos {
         else
             return obtener(tamanio() - 1).getCodAlumno() + 1;
     }
+    
+    public boolean estaMatriculado(int codAlumno) {
+		for (int i=tamanio()-1; i>=0; i--)
+			if (obtener(i).getCodAlumno() == codAlumno &&  obtener(i).getEstado() == 1)
+				return true;
+		return false;
+	}
 }

@@ -4,6 +4,8 @@ import java.awt.EventQueue;
 
 import javax.swing.JInternalFrame;
 import javax.swing.JButton;
+import javax.swing.JComboBox;
+
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
@@ -40,6 +42,9 @@ public class FrmMatricula extends JInternalFrame implements ActionListener, KeyL
 	private JScrollPane scrollPane;
 	private JTable tblMatricula;
 	private DefaultTableModel model;
+	private JComboBox <String> cboCodAlumno;
+	private JComboBox <String> cboCodCurso;
+	private JComboBox <String> cboCodDocente;
 	
 	private ArregloMatriculas am = new ArregloMatriculas();
 	private ArregloAlumnos aa = new ArregloAlumnos();
@@ -106,6 +111,13 @@ public class FrmMatricula extends JInternalFrame implements ActionListener, KeyL
 		txtDocente.setBounds(180, 132, 114, 21);
 		getContentPane().add(txtDocente);
 		
+		cboCodAlumno = new JComboBox <String> ();
+		cboCodAlumno.addActionListener(this);
+		cboCodAlumno.addMouseListener(this);
+		cboCodAlumno.setBounds(308, 69, 100, 23);
+		getContentPane().add(cboCodAlumno);
+		colocarCodigosPacientes();
+		
 		scrollPane = new JScrollPane();
 		scrollPane.setBounds(10, 200, 550, 200);
 		getContentPane().add(scrollPane);
@@ -115,6 +127,10 @@ public class FrmMatricula extends JInternalFrame implements ActionListener, KeyL
 		tblMatricula.addMouseListener(this);
 		tblMatricula.setFillsViewportHeight(true);
 		scrollPane.setViewportView(tblMatricula);
+		
+		JComboBox<String> cboCodAlumno_1 = new JComboBox<String>();
+		cboCodAlumno_1.setBounds(306, 102, 100, 23);
+		getContentPane().add(cboCodAlumno_1);
 
 		model = new DefaultTableModel();
 		model.addColumn("Código");
@@ -167,6 +183,16 @@ public class FrmMatricula extends JInternalFrame implements ActionListener, KeyL
 		}
 		if (aa.tamanio() > 0)
 			tblMatricula.getSelectionModel().setSelectionInterval(posFila, posFila);
+	}
+	
+	void colocarCodigosPacientes() {
+		ArregloAlumnos aa = new ArregloAlumnos();
+		Alumno a;
+		for (int i=0; i<aa.tamanio(); i++) {
+			a = aa.obtener(i);
+			if (!aa.estaMatriculado(a.getCodAlumno()))
+				cboCodAlumno.addItem("" + a.getCodAlumno());
+		}
 	}
 	
 	void ajustarAnchoColumnas() {
