@@ -15,7 +15,11 @@ import java.awt.event.ActionEvent;
 
 public class Home extends JFrame implements ActionListener {
 
-    private JLabel lblFondo;
+    /**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
+	private JLabel lblFondo;
     private JMenuBar menuHome;
     private JMenu mnMantenimiento;
     private JMenu mnRegistro;

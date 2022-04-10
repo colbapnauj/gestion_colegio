@@ -1,16 +1,10 @@
 package gui;
 
-import libreria.Lib;
-
 import java.awt.Color;
-import java.awt.Cursor;
 import java.awt.EventQueue;
 
-import javax.swing.DefaultComboBoxModel;
-import javax.swing.ImageIcon;
+
 import javax.swing.JButton;
-import javax.swing.JComboBox;
-import javax.swing.JDialog;
 import javax.swing.JInternalFrame;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
@@ -22,7 +16,6 @@ import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableColumnModel;
 
 import arreglos.ArregloDocentes;
-import clases.Curso;
 import clases.Docente;
 
 import java.awt.event.ActionListener;
@@ -34,6 +27,10 @@ import java.awt.event.MouseEvent;
 
 public class FrmDocente extends JInternalFrame implements ActionListener, KeyListener, MouseListener {
 
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 	private JLabel lblCodDocente;
 	private JLabel lblNombres;
 	private JLabel lblAPaterno;

@@ -131,6 +131,7 @@ public class DlgMatriculas extends JDialog implements KeyListener {
     }
 	
 	void listar() {
+		
 		int posFila = 0;
 		if (model.getRowCount() > 0)
 			posFila = tblData.getSelectedRow();
@@ -143,12 +144,16 @@ public class DlgMatriculas extends JDialog implements KeyListener {
 		Alumno a;
 		Curso c;
 		Docente d;
-		for (int i = 0; i < am.tamanio(); i++) {
-			m = am.obtener(i);
-			a = aa.buscar(m.getCodAlumno());
-			c = ac.buscar(m.getCodCurso());
-			d = ad.buscar(m.getCodDocente());
-			Object[] fila = {
+		
+			
+			switch(this.tipo) {
+			case Matricula:
+				for (int i = 0; i < am.tamanio(); i++) {
+					m = am.obtener(i);
+					a = aa.buscar(m.getCodAlumno());
+					c = ac.buscar(m.getCodCurso());
+					d = ad.buscar(m.getCodDocente());
+				Object[] filaMat = {
 				m.getCodAlumno(),
 				a.getNombres(),
 				c.getAsignatura(),
@@ -156,11 +161,73 @@ public class DlgMatriculas extends JDialog implements KeyListener {
 				m.getFecha(),
 				m.getHora(),
 				Lib.estadosAlumno[a.getEstado()]
+				
 			};
-			model.addRow(fila);
-		}
-		if (aa.tamanio() > 0)
-			tblData.getSelectionModel().setSelectionInterval(posFila, posFila);
+			
+			
+			model.addRow(filaMat);
+				}
+				if (am.tamanio() > 0)
+					tblData.getSelectionModel().setSelectionInterval(posFila, posFila);
+			
+			break;
+			case Alumno:
+				ArregloAlumnos aa = new ArregloAlumnos();
+				for (int i = 0; i < aa.tamanio(); i++) {
+					a = aa.obtener(i);
+				Object[] filaAlu = {
+						a.getCodAlumno(),
+						a.getNombres(),
+						a.getApellidoPaterno(),
+						a.getApellidoMaterno(),
+						a.getDni(),
+						a.getEdad(),
+						a.getCelular(),
+						Lib.estadosAlumno[a.getEstado()]
+					};
+					model.addRow(filaAlu);
+				}
+				if (aa.tamanio() > 0)
+					tblData.getSelectionModel().setSelectionInterval(posFila, posFila);
+			
+			break;
+			case Curso:
+				for (int i = 0; i < ac.tamanio(); i++) {
+					c = ac.buscar(i);
+				Object[] filaCur = {
+						c.getCodCurso(),
+						Lib.cicloCurso[c.getCiclo()],
+						c.getCreditos(),
+						c.getHoras(),
+						c.getAsignatura()
+					};
+					model.addRow(filaCur);
+				}
+				if (ac.tamanio() > 0)
+					tblData.getSelectionModel().setSelectionInterval(posFila, posFila);
+				
+				break;
+			case Docente:
+				for (int i = 0; i < ad.tamanio(); i++) {
+					d = ad.obtener(i);
+				Object[] filaDoc = {
+						d.getCodDocente(),
+						d.getNombres(),
+						d.getApellidoPaterno(),
+						d.getApellidoMaterno(),
+						d.getDni(),
+						d.getCelular(),
+						d.getEspecialidad(),
+						d.getFechaIngreso()
+					};
+					model.addRow(filaDoc);
+				}
+				break;
+			}	
+				
+//		}
+		
+		
 	}
 	
 	void do_txtValue_keyReleased(KeyEvent e) {
@@ -169,7 +236,7 @@ public class DlgMatriculas extends JDialog implements KeyListener {
 		
 		if (numerosLetras) {
 			// TODO Guardar en UpperCase
-			String cadena = (txtValue.getText());
+			String cadena = (txtValue.getText()).toUpperCase();
 			txtValue.setText(cadena);
 			filtro();
 			repaint();
@@ -200,7 +267,7 @@ public class DlgMatriculas extends JDialog implements KeyListener {
 			System.out.println(obj + "");
 			switch( this.tipo ) {
 			case Alumno:
-				frmMat.consultar(obj);
+				frmMat.consultarAlumno(obj);
 				break;
 			case Curso:
 				frmMat.consultarCurso(obj);

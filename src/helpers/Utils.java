@@ -9,7 +9,8 @@ public class Utils {
 	public enum Tipo {
 		Curso,
 		Alumno,
-		Docente
+		Docente,
+		Matricula
 	}
 	
 	public static void message(String s, JInternalFrame frm) {

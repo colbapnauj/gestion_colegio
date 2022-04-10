@@ -146,6 +146,7 @@ public class FrmAlumno extends JInternalFrame implements ActionListener, KeyList
 		txtEdad.setColumns(10);
 		
 		txtCelular = new JTextField();
+		txtCelular.addKeyListener(this);
 		txtCelular.setBounds(200, 190, 100, 23);
 		getContentPane().add(txtCelular);
 		txtCelular.setColumns(10);
@@ -214,6 +215,15 @@ public class FrmAlumno extends JInternalFrame implements ActionListener, KeyList
 		tblAlumno.setModel(model);
 
 		txtCodAlumno.setEditable(false);
+		
+		txtCodAlumno.setNextFocusableComponent(txtNombres);
+		txtNombres.setNextFocusableComponent(txtApellidoPaterno);
+		txtApellidoPaterno.setNextFocusableComponent(txtApellidoMaterno);
+		txtApellidoMaterno.setNextFocusableComponent(txtDni);
+		txtDni.setNextFocusableComponent(txtEdad);
+		txtEdad.setNextFocusableComponent(txtCelular);
+		txtCelular.setNextFocusableComponent(cboEstado);
+		
 
 		 habilitarEntradas(false);
 		 ajustarAnchoColumnas();
@@ -223,7 +233,7 @@ public class FrmAlumno extends JInternalFrame implements ActionListener, KeyList
 
 	public void actionPerformed(ActionEvent arg0) {
 		if (arg0.getSource() == btnAceptar) {
-			actionPerformedBtnAceptar(arg0);
+			actionPerformedBtnAceptar();
 		}
 		if (arg0.getSource() == btnAdicionar) {
 			actionPerformedBtnAdicionar(arg0);
@@ -295,11 +305,11 @@ public class FrmAlumno extends JInternalFrame implements ActionListener, KeyList
 		}
 	}
 
-	protected void actionPerformedBtnAceptar(ActionEvent arg0) {
+	protected void actionPerformedBtnAceptar() {
 		int codigoAlumno = leerCodigoAlumno();
-		String nombres = leerNombres();
-		String apaterno = leerAPaterno();
-		String amaterno = leerAMaterno();
+		String nombres = leerNombres().toUpperCase();
+		String apaterno = leerAPaterno().toUpperCase();
+		String amaterno = leerAMaterno().toUpperCase();
 		String dni = leerDni();
 		int edad = leerEdad();
 		int celular = leerCelular();
@@ -544,6 +554,9 @@ public class FrmAlumno extends JInternalFrame implements ActionListener, KeyList
 
 	@Override
 	public void keyReleased(KeyEvent e) {
+		if (e.getSource() == txtCelular) {
+			do_txtCelular_keyReleased(e);
+		}
 		// TODO Auto-generated method stub
 		if (e.getSource() == tblAlumno) {
 			e.consume();
@@ -552,4 +565,11 @@ public class FrmAlumno extends JInternalFrame implements ActionListener, KeyList
 	}
 
 
+	
+	protected void do_txtCelular_keyReleased(KeyEvent e) {
+		if (e.getKeyCode() == 10 && !btnAdicionar.isEnabled()) {
+			actionPerformedBtnAceptar();
+		}
+	}
+	
 }
