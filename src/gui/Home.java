@@ -231,7 +231,7 @@ public class Home extends JFrame implements ActionListener {
 
     }
     protected void actionPerformedMntmMatricula(ActionEvent arg0) {
-    	FrmMatricula fm = new FrmMatricula();
+    	FrmMatricula fm = FrmMatricula.getInstance();
         contentPane.add(fm);
         
         Dimension contentSize = contentPane.getSize();
@@ -241,6 +241,13 @@ public class Home extends JFrame implements ActionListener {
 
     }
     protected void actionPerformedMntmRetiro(ActionEvent arg0) {
+    	FrmRetiro fr = new FrmRetiro();
+        contentPane.add(fr);
+        
+        Dimension contentSize = contentPane.getSize();
+        Dimension frameSize = fr.getSize();
+        fr.setLocation((contentSize.width - frameSize.width) / 2, (contentSize.height - frameSize.height) / 2);
+        fr.setVisible(true);
 
     }
     protected void actionPerformedMntmCAlumnos(ActionEvent arg0) {

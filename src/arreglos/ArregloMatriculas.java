@@ -73,7 +73,7 @@ public class ArregloMatriculas {
             String[] s;
             int codMatricula, codAlumno, codCurso, codDocente;
             String fecha, hora;
-            br = new BufferedReader(new FileReader("alumnos.txt"));
+            br = new BufferedReader(new FileReader("matriculas.txt"));
             while ((linea = br.readLine()) != null) {
                 s = linea.split(";");
                 codMatricula = Integer.parseInt(s[0].trim());
@@ -94,7 +94,7 @@ public class ArregloMatriculas {
 
     public int codigoCorrelativo() {
         if (tamanio() == 0)
-            return 202110001;
+            return 200001;
         else
             return obtener(tamanio() - 1).getCodAlumno() + 1;
     }

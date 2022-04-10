@@ -23,6 +23,7 @@ import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableColumnModel;
 
 import arreglos.ArregloAlumnos;
+import helpers.Utils;
 
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
@@ -57,6 +58,7 @@ public class FrmAlumno extends JInternalFrame implements ActionListener, KeyList
 	private JScrollPane scrollPane;
 	private JTable tblAlumno;
 	private DefaultTableModel model;
+	
 
 	ArregloAlumnos aa = new ArregloAlumnos();
 
@@ -281,9 +283,9 @@ public class FrmAlumno extends JInternalFrame implements ActionListener, KeyList
 			habilitarEntradas(false);
 
 			if (aa.buscar(leerCodigoAlumno()).getEstado() != 0) {
-				message("Para eliminar un perfil el estado debe ser \"Registrado\"");
+				Utils.message("Para eliminar un perfil el estado debe ser \"Registrado\"", this);
 			}
-			int result = prompt("Eliminar registro?");
+			int result = Utils.prompt("Eliminar registro?", this);
 			if (result == 0) {
 				aa.eliminar(aa.buscar(leerCodigoAlumno()));
 				aa.grabarAlumnos();
@@ -304,36 +306,36 @@ public class FrmAlumno extends JInternalFrame implements ActionListener, KeyList
 		int estado = leerEstado();
 
 		if (nombres.length() == 0) {
-			error("Nombres, debe completar este campo", txtNombres);
+			Utils.error("Nombres, debe completar este campo", txtNombres, this);
 			return;
 		}
 		if (apaterno.length() == 0) {
-			error("Apellido Paterno, debe completar este campo", txtApellidoPaterno);
+			Utils.error("Apellido Paterno, debe completar este campo", txtApellidoPaterno, this);
 			return;
 		}
 		if (amaterno.length() == 0) {
-			error("Apellido Materno, debe completar este campo", txtApellidoMaterno);
+			Utils.error("Apellido Materno, debe completar este campo", txtApellidoMaterno, this);
 			return;
 		}
 		if (dni.length() != 8) {
-			error("DNI, debe completar este campo", txtDni);
+			Utils.error("DNI, debe completar este campo", txtDni, this);
 			return;
 		}
 		// TODO validar solo ingreso de valor hasta 100 años
 		if (edad == -1) {
-			error("Edad, debe completar este campo", txtEdad);
+			Utils.error("Edad, debe completar este campo", txtEdad, this);
 			return;
 		}
 		// TODO valor debe tener como longitud 9 caracteres.
 		// Otra forma de validar podría ser trabajar con Strings
 		if (celular == -1) {
-			error("Celular, debe completar este campo", txtCelular);
+			Utils.error("Celular, debe completar este campo", txtCelular, this);
 			return;
 		}
 		
 		if (btnAdicionar.isEnabled() == false) {
 			if (aa.existeDni(dni)) {
-				error("Dni ya registrado", txtDni);
+				Utils.error("Dni ya registrado", txtDni, this);
 				return;
 			}
 			Alumno alumno = new Alumno(codigoAlumno, nombres, apaterno, amaterno, dni, edad, celular, estado);
@@ -442,24 +444,10 @@ public class FrmAlumno extends JInternalFrame implements ActionListener, KeyList
 	}
 
 	void noExistenAlumnosMensaje() {
-		message("No existen alumnos registrados");
-	}
-	
-	void message(String s) {
-		JOptionPane.showMessageDialog(this, s, "Information", 0);
+		Utils.message("No existen alumnos registrados", this);
 	}
 
-	int prompt(String s) {
-		return JOptionPane.showConfirmDialog(this, s, "Alerta", 0, 1, null);
-	}
-
-	void error(String s, JTextField txt) {
-		message(s);
-		txt.setText("");
-		txt.requestFocus();
-	}
-
-	int leerCodigoAlumno() {
+		int leerCodigoAlumno() {
 		return Integer.parseInt(txtCodAlumno.getText().trim());
 	}
 

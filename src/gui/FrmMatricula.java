@@ -5,12 +5,15 @@ import java.awt.EventQueue;
 import javax.swing.JInternalFrame;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
+import javax.swing.JDialog;
 
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.awt.event.ActionEvent;
 import javax.swing.JTextField;
 import javax.swing.table.DefaultTableModel;
@@ -24,32 +27,57 @@ import clases.Alumno;
 import clases.Curso;
 import clases.Docente;
 import clases.Matricula;
+import dialogs.DlgMatriculas;
 import libreria.Lib;
+import helpers.Utils;
+import helpers.Utils.Tipo;
 
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
 
+
+
 public class FrmMatricula extends JInternalFrame implements ActionListener, KeyListener, MouseListener {
-	private JTextField txtCodigo;
+	
+	private static FrmMatricula single_instance = null;
+	
+	public static FrmMatricula getInstance()
+    {
+        if (single_instance == null)
+            single_instance = new FrmMatricula();
+ 
+        return single_instance;
+    }
+	
 	private JLabel lblCodigo;
 	private JLabel lblAlumno;
-	private JTextField textField;
-	private JTextField txtCurso;
 	private JLabel lblCurso;
 	private JLabel lblDocente;
-	private JTextField txtDocente;
+	private JTextField txtCodigo;
+	private JTextField txtCodAlumno;
+	private JTextField txtCodCurso;
+	private JTextField txtCodDocente;
+	private JComboBox <String> cboCodAlumno;
+	private JComboBox<String> cboCodCurso;
+	private JComboBox<String> cboCodDocente;
+	private JButton btnAceptar;
+	private JButton btnAdicionar;
+	private JButton btnConsultar;
+	private JButton btnModificar;
+	private JButton btnEliminar;
 	private JScrollPane scrollPane;
 	private JTable tblMatricula;
-	private DefaultTableModel model;
-	private JComboBox <String> cboCodAlumno;
-	private JComboBox <String> cboCodCurso;
-	private JComboBox <String> cboCodDocente;
-	
+	private DefaultTableModel model;	
 	private ArregloMatriculas am = new ArregloMatriculas();
 	private ArregloAlumnos aa = new ArregloAlumnos();
 	private ArregloCursos ac = new ArregloCursos();
 	private ArregloDocentes ad = new ArregloDocentes();
+	private JButton btnCerrar;
+	
+	public static String pCodMat = "";
+	
 
 	/**
 	 * Launch the application.
@@ -58,7 +86,7 @@ public class FrmMatricula extends JInternalFrame implements ActionListener, KeyL
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
 				try {
-					FrmMatricula frame = new FrmMatricula();
+					FrmMatricula frame = FrmMatricula.getInstance();
 					frame.setVisible(true);
 				} catch (Exception e) {
 					e.printStackTrace();
@@ -70,6 +98,7 @@ public class FrmMatricula extends JInternalFrame implements ActionListener, KeyL
 	/**
 	 * Create the frame.
 	 */
+	@SuppressWarnings("deprecation")
 	public FrmMatricula() {
 		setBounds(100, 100, 600, 500);
 		getContentPane().setLayout(null);
@@ -87,16 +116,17 @@ public class FrmMatricula extends JInternalFrame implements ActionListener, KeyL
 		lblAlumno.setBounds(48, 72, 60, 17);
 		getContentPane().add(lblAlumno);
 		
-		textField = new JTextField();
-		textField.addKeyListener(this);
-		textField.setBounds(180, 70, 114, 21);
-		getContentPane().add(textField);
-		textField.setColumns(10);
+		txtCodAlumno = new JTextField();
+		txtCodAlumno.addKeyListener(this);
+		txtCodAlumno.setBounds(180, 70, 114, 21);
+		getContentPane().add(txtCodAlumno);
+		txtCodAlumno.setColumns(10);
 		
-		txtCurso = new JTextField();
-		txtCurso.setBounds(180, 103, 114, 21);
-		getContentPane().add(txtCurso);
-		txtCurso.setColumns(10);
+		txtCodCurso = new JTextField();
+		txtCodCurso.addKeyListener(this);
+		txtCodCurso.setBounds(180, 103, 114, 21);
+		getContentPane().add(txtCodCurso);
+		txtCodCurso.setColumns(10);
 		
 		lblCurso = new JLabel("Curso");
 		lblCurso.setBounds(48, 105, 60, 17);
@@ -106,20 +136,35 @@ public class FrmMatricula extends JInternalFrame implements ActionListener, KeyL
 		lblDocente.setBounds(48, 134, 60, 17);
 		getContentPane().add(lblDocente);
 		
-		txtDocente = new JTextField();
-		txtDocente.setColumns(10);
-		txtDocente.setBounds(180, 132, 114, 21);
-		getContentPane().add(txtDocente);
+		txtCodDocente = new JTextField();
+		txtCodDocente.addKeyListener(this);
+		txtCodDocente.setColumns(10);
+		txtCodDocente.setBounds(180, 132, 114, 21);
+		getContentPane().add(txtCodDocente);
 		
 		cboCodAlumno = new JComboBox <String> ();
 		cboCodAlumno.addActionListener(this);
 		cboCodAlumno.addMouseListener(this);
-		cboCodAlumno.setBounds(308, 69, 100, 23);
+		cboCodAlumno.setBounds(306, 69, 100, 23);
 		getContentPane().add(cboCodAlumno);
-		colocarCodigosPacientes();
+		colocarCodigosAlumnos();
+		
+		cboCodCurso = new JComboBox<String>();
+		cboCodCurso.addActionListener(this);
+		cboCodCurso.addMouseListener(this);
+		cboCodCurso.setBounds(306, 102, 100, 23);
+		getContentPane().add(cboCodCurso);
+		cargarCursos();
+		
+		cboCodDocente = new JComboBox<String>();
+		cboCodDocente.addActionListener(this);
+		cboCodDocente.addMouseListener(this);
+		cboCodDocente.setBounds(306, 134, 100, 23);
+		getContentPane().add(cboCodDocente);
+		cargarDocentes();
 		
 		scrollPane = new JScrollPane();
-		scrollPane.setBounds(10, 200, 550, 200);
+		scrollPane.setBounds(10, 250, 550, 200);
 		getContentPane().add(scrollPane);
 		
 		tblMatricula = new JTable();
@@ -128,9 +173,37 @@ public class FrmMatricula extends JInternalFrame implements ActionListener, KeyL
 		tblMatricula.setFillsViewportHeight(true);
 		scrollPane.setViewportView(tblMatricula);
 		
-		JComboBox<String> cboCodAlumno_1 = new JComboBox<String>();
-		cboCodAlumno_1.setBounds(306, 102, 100, 23);
-		getContentPane().add(cboCodAlumno_1);
+		btnAceptar = new JButton("Aceptar");
+		btnAceptar.addActionListener(this);
+		btnAceptar.setBounds(303, 34, 105, 27);
+		getContentPane().add(btnAceptar);
+		
+		btnAdicionar = new JButton("Adicionar");
+		btnAdicionar.addActionListener(this);
+		btnAdicionar.setBounds(455, 34, 105, 27);
+		getContentPane().add(btnAdicionar);
+		
+		btnConsultar = new JButton("Consultar");
+		btnConsultar.addActionListener(this);
+		btnConsultar.setBounds(455, 72, 105, 27);
+		getContentPane().add(btnConsultar);
+		
+		btnModificar = new JButton("Modificar");
+		btnModificar.addActionListener(this);
+		btnModificar.setBounds(455, 113, 105, 27);
+		getContentPane().add(btnModificar);
+		
+		btnEliminar = new JButton("Eliminar");
+		btnEliminar.addActionListener(this);
+		btnEliminar.setBounds(455, 152, 105, 27);
+		getContentPane().add(btnEliminar);
+		
+		btnCerrar = new JButton("Cerrar");
+		btnCerrar.addActionListener(this);
+		btnCerrar.setBounds(455, 191, 105, 27);
+		getContentPane().add(btnCerrar);
+		
+		
 
 		model = new DefaultTableModel();
 		model.addColumn("Código");
@@ -140,17 +213,215 @@ public class FrmMatricula extends JInternalFrame implements ActionListener, KeyL
 		model.addColumn("Fecha de matrícula");
 		model.addColumn("Hora de matrícula");
 		
-//		habilitarEntradas(false);
-//		 ajustarAnchoColumnas();
-		 listar();
-//		 editarFila();
-
-
-	}
-
-	public void actionPerformed(ActionEvent e) {
+		tblMatricula.setModel(model);
 		
+		txtCodAlumno.setNextFocusableComponent(txtCodCurso);
+		txtCodCurso.setNextFocusableComponent(txtCodDocente);
+		
+		habilitarEntradas(false);
+		ajustarAnchoColumnas();
+		listar();
+		editarFila();
+
+
 	}
+	
+	public void actionPerformed(ActionEvent e) {
+		if (e.getSource() == btnModificar) {
+			modificar();
+		}
+		if (e.getSource() == btnAdicionar) {
+			do_btnAdicionar_actionPerformed(e);
+		}
+		if (e.getSource() == btnConsultar ) {
+			consultar();
+		}
+		if (e.getSource() == btnEliminar)
+			eliminar();
+		if (e.getSource() == btnCerrar) {
+			do_btnCerrar_actionPerformed(e);
+		}
+		if (e.getSource() == btnAceptar) {
+			aceptar();
+		}
+	}
+	protected void do_btnCerrar_actionPerformed(ActionEvent e) {
+		this.dispose();
+	}
+	
+	void aceptar() {
+		colocarCodigosAlumnos();
+		
+		int codMat = leerCodigoMatricula();
+		int codAlu = leerCodigoAlumno();
+		int codCur = leerCodigoCurso();
+		int codDoc = leerCodigoDocente();
+		
+		// Manejar el ingreso o búsqueda de Alumno
+		
+		
+		DateTimeFormatter date = DateTimeFormatter.ofPattern("dd/MM/yyyy");
+	    String fecha = date.format(LocalDateTime.now());
+	     
+	    DateTimeFormatter time = DateTimeFormatter.ofPattern("HH:mm:ss");
+		String hora = time.format(LocalDateTime.now());
+	     
+		if (codMat == -1) {
+			Utils.error("Error al ingresar el código", txtCodigo, this);
+			return;
+		}
+		if (codAlu == -1) {
+			Utils.error("Error al ingresar el cod Alumno", txtCodAlumno, this);
+			return;
+		}
+		if (codCur == -1) {
+			Utils.error("Error al ingresar el cod Curso", txtCodCurso, this);
+			return;
+		}
+		if (codDoc == -1) {
+			Utils.error("Error al ingresar el cod Docente", txtCodDocente, this);
+			return;
+		}
+		
+		if (btnAdicionar.isEnabled() == false) {
+			Matricula m = new Matricula(codMat, codAlu, codCur, codDoc, fecha, hora);
+			am.adicionar(m);
+			aa.cambiarEstado(codAlu, 1);
+			
+			aa.grabarAlumnos();
+			am.grabarMatriculas();
+			
+			
+			btnAdicionar.setEnabled(true);
+			colocarCodigosAlumnos();
+		}
+		
+		if (btnModificar.isEnabled() == false) {
+			Matricula mat = am.buscar(codMat);
+			mat.setCodAlumno(codAlu);
+			mat.setCodCurso(codCur);
+			mat.setCodDocente(codDoc);
+			mat.setFecha(fecha);
+			mat.setHora(hora);
+			am.grabarMatriculas();
+			btnModificar.setEnabled(true);
+		}
+		listar();
+		habilitarEntradas(false);
+		
+
+	}
+	
+	void eliminar() {
+		if (am.tamanio() == 0) {
+			noExistenMatriculasMensaje();
+			habilitarBotones(true);
+			return;
+		}
+		
+		if (leerCodigoMatricula() == -1 || 
+				leerCodigoAlumno() == -1) {
+			habilitarBotones(true);
+			consultar();
+			return;
+		}
+		
+		int codAlu = leerCodigoAlumno();
+		if (aa.buscar(codAlu).getEstado() == 2) {
+			Utils.message("Alumno retirado, no se puede cancelar la Matrícula", this);
+		}	
+		
+//		btnAdicionar.setEnabled(true);
+//		btnModificar.setEnabled(true);
+//		btnEliminar.setEnabled(false);
+		
+		editarFila();
+		habilitarEntradas(false);
+
+		int result = Utils.prompt("Eliminar matrícula?", this);
+		if (result == 0) {
+			am.eliminar(am.buscar(leerCodigoMatricula()));
+			aa.cambiarEstado(codAlu, 0);
+			am.grabarMatriculas();
+			aa.grabarAlumnos();
+			listar();
+			editarFila();
+			}
+		
+		habilitarBotones(true);
+	}
+	
+	public void consultar() {
+		try {
+			DlgMatriculas dialog = new DlgMatriculas(model, Tipo.Alumno);
+			dialog.setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
+			dialog.setLocationRelativeTo(this);
+			dialog.setVisible(true);
+			
+			
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
+	
+	public void consultarCurso() {
+		DefaultTableModel model = new DefaultTableModel();
+		model.addColumn("Código");
+		model.addColumn("Ciclo");
+		model.addColumn("Créditos");
+		model.addColumn("Horas");
+		model.addColumn("Asignatura");
+		try {
+			DlgMatriculas dialog = new DlgMatriculas(model, Tipo.Curso);
+			dialog.setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
+			dialog.setLocationRelativeTo(this);
+			dialog.setVisible(true);
+			
+			
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
+	
+	public void consultarDocente() {
+		DefaultTableModel model = new DefaultTableModel();
+		model.addColumn("Código");
+		model.addColumn("Nombres");
+		model.addColumn("A Paterno");
+		model.addColumn("A Materno");
+		model.addColumn("Dni");
+		model.addColumn("Celular");
+		model.addColumn("Especialidad");
+		model.addColumn("Fecha Ingreso");
+		try {
+			DlgMatriculas dialog = new DlgMatriculas(model, Tipo.Docente);
+			dialog.setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
+			dialog.setLocationRelativeTo(this);
+			dialog.setVisible(true);
+			
+			
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
+	
+	public void consultar(int cod) {
+		txtCodigo.setText(cod + "");
+	}
+	
+	public void consultarCurso(int cod) {
+		txtCodCurso.setText(cod + "");
+	}
+	
+	public void consultarDocente(int cod) {
+		txtCodDocente.setText(cod + "");
+	}
+	
+	public void getCodCursoFromDialog(int cod) {
+		txtCodCurso.setText(cod + "");
+	}
+
+	
 	
 	void listar() {
 		int posFila = 0;
@@ -185,13 +456,34 @@ public class FrmMatricula extends JInternalFrame implements ActionListener, KeyL
 			tblMatricula.getSelectionModel().setSelectionInterval(posFila, posFila);
 	}
 	
-	void colocarCodigosPacientes() {
+	
+	
+	void colocarCodigosAlumnos() {
 		ArregloAlumnos aa = new ArregloAlumnos();
 		Alumno a;
+		cboCodAlumno.removeAllItems();
 		for (int i=0; i<aa.tamanio(); i++) {
 			a = aa.obtener(i);
 			if (!aa.estaMatriculado(a.getCodAlumno()))
 				cboCodAlumno.addItem("" + a.getCodAlumno());
+		}
+	}
+	
+	void cargarCursos() {
+		ArregloCursos ac = new ArregloCursos();
+		Curso c;
+		for (int i=0; i<ac.tamanio(); i++) {
+			c = ac.obtener(i);
+				cboCodCurso.addItem("" + c.getCodCurso());
+		}
+	}
+	
+	void cargarDocentes() {
+		ArregloDocentes ad = new ArregloDocentes();
+		Docente d;
+		for (int i=0; i<ad.tamanio(); i++) {
+			d = ad.obtener(i);
+				cboCodDocente.addItem("" + d.getCodDocente());
 		}
 	}
 	
@@ -209,13 +501,164 @@ public class FrmMatricula extends JInternalFrame implements ActionListener, KeyL
 	int anchoColumna(int porcentaje) {
 		return porcentaje * scrollPane.getWidth() / 100;
 	}
+	
+	void habilitarEntradas(boolean value) {
+		btnAceptar.setEnabled(value);
+		txtCodigo.setEditable(value);
+		txtCodAlumno.setEditable(value);
+		txtCodCurso.setEditable(value);
+		txtCodDocente.setEditable(value);
+		cboCodAlumno.setEditable(value);
+		cboCodCurso.setEditable(value);
+		cboCodDocente.setEditable(value);
+	}
+	
+	void habilitarBotones(boolean sino) {
+		btnAdicionar.setEnabled(sino);
+		btnConsultar.setEnabled(sino);
+		btnModificar.setEnabled(sino);
+	}
+	
+	protected void mouseClickedTblMatricula(MouseEvent e) {
+		habilitarEntradas(false);
+		habilitarBotones(true);
+		editarFila();
+	}
 
 	@Override
 	public void mouseClicked(MouseEvent e) {
-		// TODO Auto-generated method stub
+		if (e.getSource() == tblMatricula) {
+			mouseClickedTblMatricula(e);;
+		}
 		
 	}
 
+		@Override
+	public void keyTyped(KeyEvent e) {
+		if (e.getSource() == txtCodAlumno) {
+			do_textField_keyTyped(e);
+		}
+		
+	}
+
+	
+
+	@Override
+	public void keyReleased(KeyEvent e) {
+		if (e.getSource() == txtCodDocente) {
+			do_txtCodDocente_keyReleased(e);
+		}
+		if (e.getSource() == txtCodCurso) {
+			do_txtCodCurso_keyReleased(e);
+		}
+		if (e.getSource() == tblMatricula) {
+			e.consume();
+			editarFila();	
+		}	
+
+	}
+	
+	
+	protected void do_btnAdicionar_actionPerformed(ActionEvent e) {
+		btnAdicionar.setEnabled(false);
+		btnConsultar.setEnabled(true);
+		btnModificar.setEnabled(true);
+		btnEliminar.setEnabled(true);
+
+		clear();
+		habilitarEntradas(true);
+		txtCodigo.setEditable(false);
+
+		txtCodAlumno.requestFocus();
+	}
+	
+	void clear() {
+		txtCodigo.setText("" + am.codigoCorrelativo());
+		txtCodAlumno.setText("");
+		txtCodCurso.setText("");
+		txtCodDocente.setText("");
+		try {
+			cboCodAlumno.setSelectedIndex(0);
+			cboCodCurso.setSelectedIndex(0);
+			cboCodDocente.setSelectedIndex(0);
+		} catch(Exception e) {}
+		
+
+	}
+	void modificar() {
+		if (am.tamanio() == 0) {
+			habilitarEntradas(false);
+			noExistenMatriculasMensaje();
+			habilitarBotones(true);
+			return;	
+		}
+		
+		habilitarBotones(false);
+		
+		editarFila();
+		habilitarEntradas(false);
+		txtCodCurso.setEditable(true);
+		txtCodCurso.requestFocus();
+			
+	}
+	
+	void noExistenMatriculasMensaje() {
+		Utils.message("No existen matriculas", this);
+	}
+	
+	void editarFila() {
+		if (am.tamanio() == 0)
+			clear();
+		else {
+			Matricula m = am.obtener(tblMatricula.getSelectedRow());
+			txtCodigo.setText("" + m.getNumMatricula());
+			txtCodAlumno.setText("" + m.getCodAlumno());
+			txtCodCurso.setText("" + m.getCodCurso());
+			txtCodDocente.setText("" + m.getCodDocente());
+			try {
+				cboCodAlumno.setSelectedItem("" + m.getCodAlumno());
+				cboCodCurso.setSelectedItem("" + m.getCodCurso());
+				cboCodDocente.setSelectedItem("" + m.getCodDocente());
+			} catch(Exception e) {
+				System.out.println(e);
+			}
+			
+			
+		}
+	}
+	
+	int leerCodigoMatricula() {
+		try {
+			return Integer.parseInt(txtCodigo.getText().trim());	
+		} catch (Exception e){
+			return -1;
+		}
+	}
+	
+	int leerCodigoAlumno() {
+		try {
+			return Integer.parseInt(txtCodAlumno.getText().trim());
+		} catch (Exception e) {
+			return -1;
+		}
+	}
+	
+	int leerCodigoCurso() {
+		try {
+			return Integer.parseInt(txtCodCurso.getText().trim());
+		} catch (Exception e) {
+			return -1;
+		}
+	}
+	
+	int leerCodigoDocente() {
+		try {
+			return Integer.parseInt(txtCodDocente.getText().trim());
+		} catch (Exception e) {
+			return -1;
+		}
+	}
+	
 	@Override
 	public void mousePressed(MouseEvent e) {
 		// TODO Auto-generated method stub
@@ -239,28 +682,21 @@ public class FrmMatricula extends JInternalFrame implements ActionListener, KeyL
 		// TODO Auto-generated method stub
 		
 	}
-
-	@Override
-	public void keyTyped(KeyEvent e) {
-		if (e.getSource() == textField) {
-			do_textField_keyTyped(e);
-		}
-		// TODO Auto-generated method stub
-		
-	}
-
+	
 	@Override
 	public void keyPressed(KeyEvent e) {
 		// TODO Auto-generated method stub
 		
 	}
-
-	@Override
-	public void keyReleased(KeyEvent e) {
-		// TODO Auto-generated method stub
-
-	}
+	
 	protected void do_textField_keyTyped(KeyEvent e) {
 
+	}
+
+	protected void do_txtCodCurso_keyReleased(KeyEvent e) {
+		consultarCurso();
+	}
+	protected void do_txtCodDocente_keyReleased(KeyEvent e) {
+		consultarDocente();
 	}
 }

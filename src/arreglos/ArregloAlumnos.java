@@ -31,6 +31,11 @@ public class ArregloAlumnos {
                 return obtener(i);
         return null;
     }
+    
+    public void cambiarEstado(int codigoAlumno, int estado) {
+        Alumno a = buscar(codigoAlumno);
+        a.setEstado(estado);
+    }
 
     public boolean existeDni(String dni) {
         for (int i = 0; i < tamanio(); i++)
@@ -42,6 +47,7 @@ public class ArregloAlumnos {
     public void eliminar(Alumno a) {
         alumnos.remove(a);
     }
+
 
     public void grabarAlumnos() {
         try {
@@ -105,7 +111,7 @@ public class ArregloAlumnos {
             return 202110001;
         else
             return obtener(tamanio() - 1).getCodAlumno() + 1;
-    }
+    } 
     
     public boolean estaMatriculado(int codAlumno) {
 		for (int i=tamanio()-1; i>=0; i--)
