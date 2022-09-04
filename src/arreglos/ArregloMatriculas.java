@@ -49,7 +49,7 @@ public class ArregloMatriculas {
             PrintWriter pw;
             String linea;
             Matricula a;
-            pw = new PrintWriter(new FileWriter("matriculas.txt"));
+            pw = new PrintWriter(new FileWriter("db/matriculas.txt"));
             for (int i = 0; i < tamanio(); i++) {
                 a = obtener(i);
                 linea = a.getNumMatricula() + ";" +
@@ -73,7 +73,7 @@ public class ArregloMatriculas {
             String[] s;
             int codMatricula, codAlumno, codCurso, codDocente;
             String fecha, hora;
-            br = new BufferedReader(new FileReader("matriculas.txt"));
+            br = new BufferedReader(new FileReader("db/matriculas.txt"));
             while ((linea = br.readLine()) != null) {
                 s = linea.split(";");
                 codMatricula = Integer.parseInt(s[0].trim());

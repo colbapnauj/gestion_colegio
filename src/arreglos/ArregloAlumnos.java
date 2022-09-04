@@ -54,7 +54,7 @@ public class ArregloAlumnos {
             PrintWriter pw;
             String linea;
             Alumno a;
-            pw = new PrintWriter(new FileWriter("alumnos.txt"));
+            pw = new PrintWriter(new FileWriter("/db/alumnos.txt"));
             for (int i = 0; i < tamanio(); i++) {
                 a = obtener(i);
                 linea = a.getCodAlumno() + ";" +
@@ -86,7 +86,7 @@ public class ArregloAlumnos {
             int edad;
             int celular;
             int estado;
-            br = new BufferedReader(new FileReader("alumnos.txt"));
+            br = new BufferedReader(new FileReader("db/alumnos.txt"));
             while ((linea = br.readLine()) != null) {
                 s = linea.split(";");
                 codigoAlumno = Integer.parseInt(s[0].trim());

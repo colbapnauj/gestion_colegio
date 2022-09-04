@@ -1,0 +1,9 @@
+.metadata/
+.settings/
+.vscode/
+
+# Archivos que genera Java
+bin/
+
+# Base de datos
+db/*.txt

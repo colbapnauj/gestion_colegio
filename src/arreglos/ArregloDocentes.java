@@ -60,7 +60,7 @@ public class ArregloDocentes {
             PrintWriter pw;
             String linea;
             Docente x;
-            pw = new PrintWriter(new FileWriter("docentes.txt"));
+            pw = new PrintWriter(new FileWriter("db/docentes.txt"));
             for (int i = 0; i < tamanio(); i++) {
                 x = obtener(i);
                 linea = x.getCodDocente() + ";" +
@@ -93,7 +93,7 @@ public class ArregloDocentes {
             String especialidad;
             String fechaIngreso;
             
-            br = new BufferedReader(new FileReader("docentes.txt"));
+            br = new BufferedReader(new FileReader("db/docentes.txt"));
             while ((linea = br.readLine()) != null) {
                 s = linea.split(";");
                 codDocente = Integer.parseInt(s[0].trim());

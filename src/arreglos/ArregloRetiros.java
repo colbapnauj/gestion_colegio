@@ -40,7 +40,7 @@ public class ArregloRetiros {
             PrintWriter pw;
             String linea;
             Retiro r;
-            pw = new PrintWriter(new FileWriter("retiros.txt"));
+            pw = new PrintWriter(new FileWriter("db/retiros.txt"));
             for (int i = 0; i < tamanio(); i++) {
                 r = obtener(i);
                 linea = r.getNumRetiro() + ";" +
@@ -62,7 +62,7 @@ public class ArregloRetiros {
             String[] s;
             int codRet, codMat;
             String fecha, hora;
-            br = new BufferedReader(new FileReader("retiros.txt"));
+            br = new BufferedReader(new FileReader("db/retiros.txt"));
             while ((linea = br.readLine()) != null) {
                 s = linea.split(";");
                 codRet = Integer.parseInt(s[0].trim());

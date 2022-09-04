@@ -53,7 +53,7 @@ public class ArregloCursos {
             PrintWriter pw;
             String linea;
             Curso a;
-            pw = new PrintWriter(new FileWriter("cursos.txt"));
+            pw = new PrintWriter(new FileWriter("/db/cursos.txt"));
             for (int i = 0; i < tamanio(); i++) {
                 a = obtener(i);
                 linea = a.getCodCurso() + ";" +
@@ -79,7 +79,7 @@ public class ArregloCursos {
             int creditos;
             int horas;
             String asignatura;
-            br = new BufferedReader(new FileReader("cursos.txt"));
+            br = new BufferedReader(new FileReader("db/cursos.txt"));
             while ((linea = br.readLine()) != null) {
                 s = linea.split(";");
                 codCurso = Integer.parseInt(s[0].trim());
